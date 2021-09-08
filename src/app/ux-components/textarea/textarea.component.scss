@@ -1,0 +1,25 @@
+:host {
+  width: 100%;
+}
+textarea {
+  box-sizing: border-box;
+  background-color: #424242;
+  border-top-left-radius: 25px;
+  border-bottom-left-radius: 25px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
+  height: 96px;
+  border: none;
+  width: 100%;
+  color: white;
+  letter-spacing: 1px;
+  padding: 8px 12px;
+  &:active &:focus {
+    border: none;
+    outline: none;
+  }
+  &:focus-visible {
+      border: none;
+      outline: none;
+  }
+}

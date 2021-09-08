@@ -1,0 +1,158 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@angular/material/theming";
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: "Kanit", sans-serif !important;
+}
+* {
+  font-family: Kanit;
+}
+
+.snackbar-error {
+  width: 100%;
+  height: 44px;
+  font-weight: bold;
+  background-color: rgb(163, 7, 7);
+  color: rgb(241, 237, 237);
+}
+.centerize {
+  display: flex;
+  place-content: center;
+  align-content: center;
+  height: 100%;
+  align-items: center;
+}
+.mat-flat-button.mat-primary,
+.mat-raised-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  border-radius: 25px;
+  font-weight: bold;
+}
+.mat-drawer {
+  background-color: black;
+}
+.mat-progress-bar-buffer {
+  background-color: #333333;
+}
+.mat-slide-toggle-content {
+  font-family: Kanit;
+}
+button {
+  .material-icons {
+    font-size: 16px;
+    height: 16px;
+    width: 16px;
+    margin-right: 4px;
+  }
+}
+.mat-button, .mat-raised-button, .mat-icon-button, .mat-stroked-button, .mat-flat-button, .mat-fab, .mat-mini-fab {
+  font-size: 15px;
+  letter-spacing: 1px;
+}
+.mapboxgl-map {
+  text-align: center;
+}
+
+.mat-standard-chip {
+  min-height: 25px !important;
+  min-width: 40px !important;
+}
+
+mat-chip {
+  display: flex;
+  font-weight: bold;
+  align-items: center;
+  font-size: 10px;
+  padding: 4px 9px !important;
+  border-radius: 25px;
+
+}
+
+.mat-chip.mat-standard-chip.mat-chip-selected.mat-primary {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 62px;
+  text-align: center;
+  display: flex;
+  place-content: center;
+}
+.grayscale {
+  filter: grayscale(1);
+}
+
+.primary {
+
+  color: #9c27b0;
+
+}
+
+.accent {
+
+  color: #6DB08F;
+
+}
+
+
+.main-container-big {
+  position: absolute;
+  bottom: 0;
+  height: auto;
+  background-color: #212121;
+  opacity: 0.9;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.main-container-small {
+  position: absolute;
+  bottom: 0;
+  height: 35%;
+  background-color: #212121;
+  opacity: 0.9;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  left: 0;
+  right: 0;
+  margin-left: auto;
+  margin-right: auto;
+}
+.main-container-inner {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+.top-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  place-content: space-between;
+  .top-label {
+    padding-left: 32px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    span {
+      font-size: 20px;
+      line-height: 32px;
+      letter-spacing: 1px;
+      color: grey;
+      font-family: "Kanit", sans-serif;
+    }
+  }
+}

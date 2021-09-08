@@ -1,0 +1,17 @@
+:host {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .x {
+        position: absolute;
+        width: 100vw;
+        height: 2px;
+        background-color: #7b1fa2;
+    }
+    .y {
+        position: absolute;
+        width: 2px;
+        height: 100vh;
+        background-color: #7b1fa2;
+    }
+}

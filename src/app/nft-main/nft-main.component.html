@@ -1,0 +1,97 @@
+<div *ngIf="this.h3Key">
+  <mat-card>
+    <mat-card-title>H3 Cell Details</mat-card-title>
+    <mat-card-content>H3 Key: {{this.h3Key}}</mat-card-content>
+    <mat-card-content>Area: XXX</mat-card-content>
+    <mat-card-content>Location: XXX</mat-card-content>
+  </mat-card>
+  <div *ngIf="this.hasNft()">
+    <mat-card>
+      <mat-card-title>Token Details</mat-card-title>
+      <mat-card-content class="primary">{{this.getNft().status == SoldStatus.RESALE ? 'On Sale' : ''}}</mat-card-content>
+      <mat-card-content class="accent">{{this.getNft().owner ? 'Owned' : ''}}</mat-card-content>
+      <mat-card-content>Owner: {{this.getNft().ownerAddress | shortAddress}}</mat-card-content>
+      <mat-card-content>Latest Resale Price: {{this.getNft().price | weiToOne}} ONE</mat-card-content>
+    </mat-card>
+
+    <mat-divider></mat-divider>
+
+    <div [ngSwitch]="this.getNft().status">
+      <div *ngSwitchCase="SoldStatus.SOLD">
+        <mat-card *ngIf="this.isTokenOwner()">
+          <mat-card-title>Start Resale</mat-card-title>
+          <form
+            (ngSubmit)="startResale()"
+            [formGroup]="startResaleForm"
+            class="form">
+            <mat-form-field appearance="fill" label="Price">
+              <mat-label>Price (ONE) </mat-label>
+              <input matInput type="number" formControlName="priceOne"/>
+            </mat-form-field>
+            <mat-form-field label="Duration (seconds)" appearance="fill">
+              <mat-label>Duration (seconds) </mat-label>
+              <input matInput type="number" formControlName="secondsAfter"/>
+            </mat-form-field>
+            <button mat-raised-button color="primary" class="submit-button">
+              <mat-icon>sell</mat-icon>
+              <span class="button-label">Sell</span>
+            </button>
+          </form>
+        </mat-card>
+      </div>
+
+      <div *ngSwitchCase="SoldStatus.RESALE">
+        <mat-card>
+          <mat-card-title>Resale Details</mat-card-title>
+          <mat-card-content>
+            <mat-progress-bar mode="determinate" value="{{this.getNftResaleProgress()}}">
+            </mat-progress-bar>
+            <div *ngIf="this.canBidResale()">
+              {{this.getHoursLeft()}} hours left
+            </div>
+            <div *ngIf="!this.canBidResale()">
+              Resale has ended
+            </div>
+          </mat-card-content>
+
+          <mat-card-content>
+            <div>Resale starting price: {{this.getNft().resalePrice | weiToOne}} ONE</div>
+            <div *ngIf="this.getNft().bidInfo" class="accent">
+              Highest Bid {{this.getNft().bidInfo.highestBid | weiToOne}} ONE by {{this.getNft().bidInfo.bidderAddress | shortAddress}}
+            </div>
+          </mat-card-content>
+          <mat-card-actions *ngIf="this.isSeller()">
+            <button mat-raised-button color="primary">
+              <mat-icon>cancel</mat-icon>
+              Stop Resale
+            </button>
+          </mat-card-actions>
+          <mat-card-content *ngIf="!this.isSeller() && this.canBidResale()">
+            <form
+              (ngSubmit)="bidResale()"
+              [formGroup]="bidResaleForm"
+              class="form">
+              <mat-form-field label="Price" appearance="fill">
+                <mat-label>Bid Price (ONE) </mat-label>
+                <input type="number" matInput formControlName="priceOne"/>
+              </mat-form-field>
+              <button mat-raised-button color="primary" class="submit-button">
+                <mat-icon>upload</mat-icon>
+                <span class="button-label">Bid</span>
+              </button>
+            </form>
+          </mat-card-content>
+
+          <mat-card-actions *ngIf="!this.isSeller() && this.isReadyForRetrieve()">
+            <button (click)="this.retrieveTokenFromResale()">Retrieve</button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+   </div>
+  </div>
+  <div *ngIf="!this.hasNft()">
+    <button mat-raised-button color="primary" (click)="mintNft()">
+      Mint and Buy
+    </button>
+  </div>
+</div>

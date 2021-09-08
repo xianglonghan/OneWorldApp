@@ -1,0 +1,44 @@
+<mat-drawer-container *ngIf="!curtain" class="main-wrapper">
+  <mat-drawer
+    #drawer2
+    mode="side"
+    [opened]="leftSidenavOpened"
+    [ngClass]="{
+      'example-container-left': !isMobile,
+      'example-container-mobile-left': isMobile
+    }"
+  >
+    <app-wallet></app-wallet>
+  </mat-drawer>
+
+  <app-map-gl></app-map-gl>
+  <div [@slideUpIn]="outletRef.isActivated ? outletRef.activatedRoute : ''">
+    <router-outlet #outletRef="outlet"></router-outlet>
+  </div>
+
+  <mat-drawer
+    #drawer
+    position="end"
+    mode="side"
+    [ngClass]="{
+      'example-container': !isMobile,
+      'example-container-mobile': isMobile
+    }"
+    [opened]="!!this.h3Key"
+  >
+    <!-- Move to separate component -->
+
+    <div class="sidenav-open fab-close" *ngIf="isMobile">
+      <button (click)="uxService.closeSidenav()" mat-icon-button>
+        <mat-icon color="primary">close</mat-icon>
+      </button>
+    </div>
+    <app-nft-main></app-nft-main>
+  </mat-drawer>
+</mat-drawer-container>
+<div class="curtain" [@slideOut] *ngIf="curtain">
+  <app-curtain
+    (connectToMetamask)="connectToMetamask()"
+    [loading]="loading"
+  ></app-curtain>
+</div>

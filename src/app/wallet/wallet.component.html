@@ -1,0 +1,78 @@
+<mat-toolbar color="secondary">
+  <div class="logo-nft">
+    <span> GeoSpatia </span>
+    <div class="sidenav-open fab-close" *ngIf="isMobile">
+      <button (click)="uxService.closeLeftSidenav()" mat-icon-button>
+        <mat-icon color="primary">close</mat-icon>
+      </button>
+    </div>
+  </div>
+</mat-toolbar>
+
+<div class="info-wrapper">
+  <div class="address-bar">
+    <button
+      class="wallet-button-wrapper"
+      mat-raised-button
+      color="primary"
+      aria-label="wallet address"
+    >
+      <button
+        class="mini-fab"
+        disableRipple
+        mat-mini-fab
+        color="secondary"
+        (click)="uxService.openLeftSidenav()"
+      >
+        <mat-icon>person</mat-icon>
+      </button>
+      <div class="wallet-button">
+        <div class="start">
+          {{ (contractService.walletInfo$ | async)?.address | shortAddress }}
+        </div>
+      </div>
+    </button>
+  </div>
+
+  <div class="wallet-label">
+    <div class="divider-2"></div>
+    <div class="wallet-label-text">Wallet status</div>
+  </div>
+
+  <div class="description-wallet">
+    <div class="badges">
+      <mat-chip-list>
+        <mat-chip *ngIf="(contractService.walletInfo$ | async)?.isContractOwner">Contract owner</mat-chip>
+      </mat-chip-list>
+    </div>
+    <div>
+      <span> ~ {{ convertedBalance }} $ </span>
+    </div>
+    <div class="info-inner">
+      <span class="amount"> {{ walletInfo?.balance.substring(0, 12) }} </span>
+      <span> ONE </span>
+    </div>
+    <button (click)="logout()" mat-raised-button color="primary">
+      <mat-icon>power_settings_new</mat-icon> Logout
+    </button>
+  </div>
+</div>
+<div class="wallet-label" *ngIf="nftsWithBids.length > 0">
+  <div class="divider"></div>
+
+  <span class="wallet-label-text"> Nfts with your bids </span>
+</div>
+<app-nft-grid
+  *ngIf="nftsWithBids.length > 0"
+  [nfts]="nftsWithBids"
+></app-nft-grid>
+<!-- TODO -->
+<div class="wallet-label" *ngIf="(ownedNFTs$ | async)?.length > 0">
+  <div class="divider"></div>
+
+  <div class="wallet-label-text">NFT collection</div>
+</div>
+<app-nft-grid
+  *ngIf="(ownedNFTs$ | async)?.length > 0"
+  [nfts]="ownedNFTs$ | async"
+></app-nft-grid>

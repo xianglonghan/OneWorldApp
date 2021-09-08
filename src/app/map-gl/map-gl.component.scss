@@ -1,0 +1,31 @@
+mgl-map {
+  height: 100%;
+  width: 100%;
+}
+.marker svg {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+::ng-deep a.mapboxgl-ctrl-logo {
+  display: none;
+}
+.svg-icon {
+  cursor: pointer;
+  border-radius: 50%;
+  border: 1px solid black;
+}
+.nft-marker {
+  width: 40px;
+  height: 40px;
+  overflow: hidden;
+}
+.selection-controls {
+  top: 0;
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+}
