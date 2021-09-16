@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContractService, GeoNFT, NFT, SoldStatus } from './../services/contract.service';
+import { ContractService, GeoNFT, SoldStatus } from './../services/contract.service';
 
 @Component({
   selector: 'app-my-nfts',

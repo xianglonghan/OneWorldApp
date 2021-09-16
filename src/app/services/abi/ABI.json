@@ -58,7 +58,30 @@
 		"anonymous": false,
 		"inputs": [
 			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint32",
+				"name": "resaleId",
+				"type": "uint32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "bidder",
+				"type": "address"
+			},
+			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "address",
 						"name": "sellerAddress",
@@ -66,7 +89,12 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "highestBid",
+						"name": "bidAskPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBidPrice",
 						"type": "uint256"
 					},
 					{
@@ -76,12 +104,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "resalePrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "buyNowPrice",
 						"type": "uint256"
 					},
 					{
@@ -97,20 +120,8 @@
 				],
 				"indexed": false,
 				"internalType": "struct OneWorld.ResaleInfo",
-				"name": "latestInfo",
+				"name": "resaleInfo",
 				"type": "tuple"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "tokenId",
-				"type": "uint256"
 			}
 		],
 		"name": "BidResaleEvent",
@@ -124,6 +135,79 @@
 				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "sellerAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "bidAskPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBidPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "bidderAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "buyNowPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "resaleStartTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "resaleEndTime",
+						"type": "uint256"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct OneWorld.ResaleInfo",
+				"name": "resaleInfo",
+				"type": "tuple"
+			}
+		],
+		"name": "BuyNowEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
 			},
 			{
 				"components": [
@@ -186,7 +270,18 @@
 				"type": "uint256"
 			},
 			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "buyer",
+				"type": "address"
+			},
+			{
 				"components": [
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
 					{
 						"internalType": "address",
 						"name": "sellerAddress",
@@ -194,7 +289,12 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "highestBid",
+						"name": "bidAskPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBidPrice",
 						"type": "uint256"
 					},
 					{
@@ -204,12 +304,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "resalePrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "buyNowPrice",
 						"type": "uint256"
 					},
 					{
@@ -243,6 +338,12 @@
 			},
 			{
 				"indexed": false,
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			},
+			{
+				"indexed": false,
 				"internalType": "uint32",
 				"name": "resaleId",
 				"type": "uint32"
@@ -250,13 +351,23 @@
 			{
 				"components": [
 					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
 						"internalType": "address",
 						"name": "sellerAddress",
 						"type": "address"
 					},
 					{
 						"internalType": "uint256",
-						"name": "highestBid",
+						"name": "bidAskPrice",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "highestBidPrice",
 						"type": "uint256"
 					},
 					{
@@ -266,12 +377,7 @@
 					},
 					{
 						"internalType": "uint256",
-						"name": "resalePrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "buyNowPrice",
 						"type": "uint256"
 					},
 					{
@@ -298,6 +404,31 @@
 			}
 		],
 		"name": "StartResaleEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint32",
+				"name": "resaleId",
+				"type": "uint32"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "seller",
+				"type": "address"
+			}
+		],
+		"name": "StopResaleEvent",
 		"type": "event"
 	},
 	{
@@ -365,17 +496,25 @@
 	{
 		"inputs": [
 			{
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
-			},
-			{
 				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
 			}
 		],
 		"name": "bidResale",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "buyNow",
 		"outputs": [],
 		"stateMutability": "payable",
 		"type": "function"
@@ -456,13 +595,23 @@
 					{
 						"components": [
 							{
+								"internalType": "uint256",
+								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
 								"internalType": "address",
 								"name": "sellerAddress",
 								"type": "address"
 							},
 							{
 								"internalType": "uint256",
-								"name": "highestBid",
+								"name": "bidAskPrice",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "highestBidPrice",
 								"type": "uint256"
 							},
 							{
@@ -472,12 +621,7 @@
 							},
 							{
 								"internalType": "uint256",
-								"name": "resalePrice",
-								"type": "uint256"
-							},
-							{
-								"internalType": "uint256",
-								"name": "tokenId",
+								"name": "buyNowPrice",
 								"type": "uint256"
 							},
 							{
@@ -643,13 +787,23 @@
 		"name": "resaleInfoMap",
 		"outputs": [
 			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
 				"internalType": "address",
 				"name": "sellerAddress",
 				"type": "address"
 			},
 			{
 				"internalType": "uint256",
-				"name": "highestBid",
+				"name": "bidAskPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "highestBidPrice",
 				"type": "uint256"
 			},
 			{
@@ -659,12 +813,7 @@
 			},
 			{
 				"internalType": "uint256",
-				"name": "resalePrice",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "buyNowPrice",
 				"type": "uint256"
 			},
 			{
@@ -683,11 +832,6 @@
 	},
 	{
 		"inputs": [
-			{
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
-			},
 			{
 				"internalType": "uint256",
 				"name": "tokenId",
@@ -772,12 +916,17 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "price",
+				"name": "tokenId",
 				"type": "uint256"
 			},
 			{
 				"internalType": "uint256",
-				"name": "tokenId",
+				"name": "buyNowPrice",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "bidAskPrice",
 				"type": "uint256"
 			},
 			{
@@ -787,6 +936,19 @@
 			}
 		],
 		"name": "startResale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			}
+		],
+		"name": "stopResale",
 		"outputs": [],
 		"stateMutability": "nonpayable",
 		"type": "function"

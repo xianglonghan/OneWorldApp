@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { LngLat } from 'mapbox-gl';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map, tap } from 'rxjs/operators';
 import abi from './abi/ABI.json';
 const Web3 = require('web3');
 
@@ -11,20 +10,12 @@ export enum SoldStatus {
   SOLD,
   RESALE,
 }
-// declare let window: any;
-export interface NFT {
-  name: string;
-  location: string;
-  status: string;
-  price: string;
-  layer: number;
-  owner?: string;
-}
 
 export interface TokenInfo {
   price: string;
   status: string;
   layer: string;
+  resaleId: string;
 }
 
 export interface MintTokenEvent {
@@ -33,11 +24,6 @@ export interface MintTokenEvent {
     tokenInfo: TokenInfo;
     tokenId: string;
   };
-}
-
-export interface BidInfo {
-  highestBid: string;
-  bidderAddress: string;
 }
 
 export interface GeoNFT {
@@ -49,11 +35,12 @@ export interface GeoNFT {
   ownerAddress: string;
   owner: boolean;
   sellerAddress: string;
-  resalePrice: string,
+  buyNowPrice: string;
   resaleStartTime: Date;
   resaleEndTime: Date;
+  bidAskPrice: string,
   bidderAddress: string;
-  highestBid: string;
+  highestBidPrice: string;
   resaleId?: string;
 }
 
@@ -73,27 +60,6 @@ export interface TransactionResultEvent {
   confirmationNumber: number;
 }
 
-export interface NFTSaleEvent {
-  address: string;
-  tokenId: string;
-}
-
-export interface NftBidEvent {
-  returnValues: {
-    newBid: BidInfo; // name of the property? auctionInfo, or something else?
-    tokenId: string;
-  };
-
-}
-
-export interface ResaleBidEvent {
-  returnValues: {
-    latestInfo: ResaleInfo; // name of the property? auctionInfo, or something else?
-    tokenID: string;
-    resaleId: string;
-  };
-}
-
 export interface BidResaleEvent {
   returnValues: {
     latestInfo: ResaleInfo; // name of the property? auctionInfo, or something else?
@@ -102,38 +68,14 @@ export interface BidResaleEvent {
   };
 }
 
-export interface BidViewModel {
-  highestBid: string;
-  latestBidIsOwn: boolean;
-  outBidden: boolean;
-}
-
-export interface SaleRetrieveEvent {
-  returnValues: {
-    UserAddress: string;
-    tokenID: string;
-  };
-}
-
 export interface ResaleInfo {
-  highestBid: string;
+  highestBidPrice: string;
   bidderAddress: string;
-  resalePrice: string;
+  bidAskPrice: string;
+  buyNowPrice: string;
   tokenID: string;
   resaleEndTime: string;
   sellerAddress: string;
-}
-
-export interface ResaleCreation {
-  returnValues: {
-    tokenID: string;
-    resaleID: string;
-    creationTime: string;
-    resaleInfo: {
-      resalePrice: string;
-      resaleTime: string;
-    }
-  };
 }
 
 export interface StartResaleEvent {
@@ -145,6 +87,23 @@ export interface StartResaleEvent {
   };
 }
 
+export interface StopResaleEvent {
+  returnValues: {
+    tokenId: string;
+    resaleId: string;
+    seller: string;
+  };
+}
+
+export interface BuyNowEvent {
+  returnValues: {
+    tokenId: string;
+    resaleId: string;
+    buyer: string;
+    resaleInfo: ResaleInfo;
+  };
+}
+
 export interface RetrieveTokenFromResaleEvent {
   returnValues: {
     tokenId: string;
@@ -152,18 +111,10 @@ export interface RetrieveTokenFromResaleEvent {
   };
 }
 
-export interface CreateNft {
-  name: string;
-  location: LngLat;
-  svg: string;
-  price: string;
-  tillDate: Date;
-}
-
 export type TransactionEventUnion = TransactionResultEvent | TransactionStartedEvent;
 @Injectable()
 export class ContractService {
-  contractAddress = '0x76ed8796F83622ca757768084816005CCcF2c9d6';
+  contractAddress = '0xc748fb43E2FbBb69B31642BFb585a03b017B912e';
   blockNumber = 14600379;
   private loggedSubject = new BehaviorSubject<boolean>(false);
   logged$ = this.loggedSubject.asObservable();
@@ -254,18 +205,31 @@ export class ContractService {
           this.reloadNft(startResaleEvent.returnValues.tokenId);
         }
       });
+    this.contract.events.StopResaleEvent({})
+      .on('data', (stopResaleEvent: StopResaleEvent) => {
+        if (this.nftMap.has(stopResaleEvent.returnValues.tokenId)) {
+          this.reloadNft(stopResaleEvent.returnValues.tokenId);
+        }
+      });
+    this.contract.events.BuyNowEvent({})
+      .on('data', (buyNowEvent: BuyNowEvent) => {
+        if (this.nftMap.has(buyNowEvent.returnValues.tokenId)) {
+          this.reloadNft(buyNowEvent.returnValues.tokenId);
+        }
+      });  
     this.contract.events.BidResaleEvent({})
       .on('data', (bidResaleEvent: BidResaleEvent) => {
         if (this.nftMap.has(bidResaleEvent.returnValues.tokenId)) {
           this.reloadNft(bidResaleEvent.returnValues.tokenId);
         }
-      });
+      });    
     this.contract.events.RetrieveTokenFromResaleEvent({})
       .on('data', (retrieveTokenFromResaleEvent: RetrieveTokenFromResaleEvent) => {
         if (this.nftMap.has(retrieveTokenFromResaleEvent.returnValues.tokenId)) {
           this.reloadNft(retrieveTokenFromResaleEvent.returnValues.tokenId);
         }
       });
+     
   }
 
   private epochToDate(epoch: string): Date {
@@ -353,24 +317,41 @@ export class ContractService {
     this.listenToTransaction(transaction);
   }
 
-  startResale(h3Key: String, priceOne: number, secondsAfter: number): void {
+  startResale(h3Key: String, buyNowPriceOne: number, bidAskPriceOne: number, 
+    secondsAfter: number): void {
     const transaction = this.contract.methods
-      .startResale(new Web3.utils.BN(this.oneToWei(priceOne.toString())), 
-          this.h3KeyToTokenId(h3Key), secondsAfter)
+      .startResale(this.h3KeyToTokenId(h3Key),
+          new Web3.utils.BN(this.oneToWei(buyNowPriceOne.toString())), 
+          new Web3.utils.BN(this.oneToWei(bidAskPriceOne.toString())),
+          secondsAfter)
       .send({ from: this.selectedAddress });
     this.listenToTransaction(transaction);
   }
 
-  bidResale(h3Key: String, resaleId: string, priceOne: number): void {
+  stopResale(h3Key: String): void {
     const transaction = this.contract.methods
-      .bidResale(resaleId, this.h3KeyToTokenId(h3Key))
+      .stopResale(this.h3KeyToTokenId(h3Key))
+      .send({ from: this.selectedAddress});
+    this.listenToTransaction(transaction);
+  }
+
+  buyNow(h3Key: String, priceWei: string): void {
+    const transaction = this.contract.methods
+      .buyNow(this.h3KeyToTokenId(h3Key))
+      .send({ from: this.selectedAddress, value: priceWei});
+    this.listenToTransaction(transaction);
+  }
+
+  bidResale(h3Key: String, priceOne: number): void {
+    const transaction = this.contract.methods
+      .bidResale(this.h3KeyToTokenId(h3Key))
       .send({ from: this.selectedAddress, value: this.oneToWei(priceOne.toString())});
     this.listenToTransaction(transaction);
   }
 
-  retrieveTokenFromResale(h3Key: String, resaleId: string): void {
+  retrieveTokenFromResale(h3Key: String): void {
     const transaction = this.contract.methods
-      .retrieveTokenFromResale(resaleId, this.h3KeyToTokenId(h3Key))
+      .retrieveTokenFromResale(this.h3KeyToTokenId(h3Key))
       .send({ from: this.selectedAddress});
     this.listenToTransaction(transaction);
   }
@@ -416,11 +397,12 @@ export class ContractService {
       resaleStartTime: new Date(Number(result.resaleInfo.resaleStartTime) * 1000),
       resaleEndTime: new Date(Number(result.resaleInfo.resaleEndTime) * 1000),
       sellerAddress: result.resaleInfo.sellerAddress,
-      resalePrice: result.resaleInfo.resalePrice,
+      bidAskPrice: result.resaleInfo.bidAskPrice,
+      buyNowPrice: result.resaleInfo.buyNowPrice,
       status: this.getStatus(result.tokenInfo.status),
       price: result.tokenInfo.price,
       bidderAddress: result.resaleInfo.bidderAddress,
-      highestBid: result.resaleInfo.highestBid
+      highestBidPrice: result.resaleInfo.highestBidPrice
     };
   }
 
@@ -459,15 +441,6 @@ export class ContractService {
       ...this.walletInfoSubject.getValue(),
       ...{ isContractOwner: this.contractOwnerAddress && this.contractOwnerAddress.toLowerCase() === this.selectedAddress }
     });
-  }
-
-  /**
-   * TODO: retrieve many NFTs at once
-   * @param tokenId
-   */
-  retrieveResaleNFT(resaleId: string[], tokenId: string[]): void {
-    const transaction = this.contract.methods.RetrieveReSale(resaleId, tokenId).send({ from: this.selectedAddress });
-    this.listenToTransaction(transaction);
   }
 
   listenToTransaction(transaction): void {

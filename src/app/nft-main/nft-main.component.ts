@@ -1,4 +1,4 @@
-import { ContractService, GeoNFT, NFT, SoldStatus } from './../services/contract.service';
+import { ContractService, GeoNFT, SoldStatus } from './../services/contract.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { MapHelperService } from '../services/map-helper.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -15,7 +15,8 @@ export class NftMainComponent implements OnInit {
   h3KeyToNft: Map<String, GeoNFT> = new Map();
   SoldStatus = SoldStatus;
   startResaleForm = this.formBuilder.group({
-    priceOne: ['', [Validators.required]],
+    buyNowPriceOne: ['', [Validators.required]],
+    bidAskPriceOne: ['', [Validators.required]],
     secondsAfter: ['', [Validators.required]],
   });
   bidResaleForm = this.formBuilder.group({
@@ -68,7 +69,13 @@ export class NftMainComponent implements OnInit {
 
   startResale(): void {
     this.contractService.startResale(
-        this.h3Key, this.startResaleForm.value.priceOne, this.startResaleForm.value.secondsAfter);
+        this.h3Key, this.startResaleForm.value.buyNowPriceOne, 
+        this.startResaleForm.value.bidAskPriceOne,
+        this.startResaleForm.value.secondsAfter);
+  }
+
+  stopResale(): void {
+    this.contractService.stopResale(this.h3Key);
   }
 
   canBidResale(): boolean {
@@ -76,8 +83,11 @@ export class NftMainComponent implements OnInit {
   }
 
   bidResale(): void {
-    this.contractService.bidResale(
-        this.h3Key, this.getNft().resaleId, this.bidResaleForm.value.priceOne);
+    this.contractService.bidResale(this.h3Key, this.bidResaleForm.value.priceOne);
+  }
+
+  buyNow(): void {
+    this.contractService.buyNow(this.h3Key, this.getNft().buyNowPrice);
   }
   
   isReadyForRetrieve(): boolean {
@@ -85,7 +95,7 @@ export class NftMainComponent implements OnInit {
   }
 
   retrieveTokenFromResale(): void {
-    this.contractService.retrieveTokenFromResale(this.h3Key, this.getNft().resaleId);
+    this.contractService.retrieveTokenFromResale(this.h3Key);
   }
 
   getNftResaleProgress(): number {
