@@ -1,0 +1,22 @@
+<div>
+    <button (click)="onGetMyNftsClick()" mat-raised-button color="primary">
+        <mat-icon>refresh</mat-icon>
+        Fetch my tokens
+    </button>
+    <div>Owned</div>
+    <div *ngFor="let ownedNft of this.ownedNfts">
+        {{ownedNft.tokenId}}
+    </div>
+    <div>I am selling</div>
+    <div *ngFor="let sellerNft of this.sellerNfts">
+        {{sellerNft.tokenId}}
+    </div>
+    <div>I am bidding</div>
+    <div *ngFor="let bidNft of this.bidNfts">
+        {{bidNft.tokenId}}
+    </div>
+    <div>Ready for me to retrieve</div>
+    <div *ngFor="let toRetrieveNft of this.toRetrieveNfts">
+        {{toRetrieveNft.tokenId}}
+    </div>
+</div>

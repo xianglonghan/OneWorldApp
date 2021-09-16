@@ -18,9 +18,7 @@ export class WalletComponent implements OnInit {
   walletInfo: WalletInfo;
   enableSales: boolean;
   isAdmin: boolean;
-  ownedNFTs$ = this.contractService.getOwnedNFTs$();
   nftsWithBids = [];
-  nftsWithBids$ = this.contractService.getNftsWithMyBids$().pipe(tap(x => console.log('nfts with bids', x)));
   constructor(
     public uxService: UxService,
     private deviceDetectorService: DeviceDetectorService,
@@ -38,12 +36,6 @@ export class WalletComponent implements OnInit {
       this.convertedBalance = convertedBalance.toFixed(2);
       this.loadSalesStatus();
     });
-
-    this.contractService.getNftsWithMyBids$().subscribe((nfts) => {
-      console.log('nfts with bids', nfts);
-      this.nftsWithBids = nfts;
-    });
-
   }
 
   loadSalesStatus(): void {
@@ -56,9 +48,7 @@ export class WalletComponent implements OnInit {
 
   toggleSales(): void {
     if (!this.enableSales) {
-      this.contractService.enableResalePermission();
     } else {
-      this.contractService.disableResalePermission();
     }
   }
 

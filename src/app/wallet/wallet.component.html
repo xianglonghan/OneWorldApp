@@ -62,17 +62,3 @@
 
   <span class="wallet-label-text"> Nfts with your bids </span>
 </div>
-<app-nft-grid
-  *ngIf="nftsWithBids.length > 0"
-  [nfts]="nftsWithBids"
-></app-nft-grid>
-<!-- TODO -->
-<div class="wallet-label" *ngIf="(ownedNFTs$ | async)?.length > 0">
-  <div class="divider"></div>
-
-  <div class="wallet-label-text">NFT collection</div>
-</div>
-<app-nft-grid
-  *ngIf="(ownedNFTs$ | async)?.length > 0"
-  [nfts]="ownedNFTs$ | async"
-></app-nft-grid>

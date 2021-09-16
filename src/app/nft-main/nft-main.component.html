@@ -56,8 +56,8 @@
 
           <mat-card-content>
             <div>Resale starting price: {{this.getNft().resalePrice | weiToOne}} ONE</div>
-            <div *ngIf="this.getNft().bidInfo" class="accent">
-              Highest Bid {{this.getNft().bidInfo.highestBid | weiToOne}} ONE by {{this.getNft().bidInfo.bidderAddress | shortAddress}}
+            <div *ngIf="this.getNft().bidderAddress" class="accent">
+              Highest Bid {{this.getNft().highestBid | weiToOne}} ONE by {{this.getNft().bidderAddress | shortAddress}}
             </div>
           </mat-card-content>
           <mat-card-actions *ngIf="this.isSeller()">

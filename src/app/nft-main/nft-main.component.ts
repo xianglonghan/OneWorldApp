@@ -91,11 +91,11 @@ export class NftMainComponent implements OnInit {
   getNftResaleProgress(): number {
     // Handle retrieve event (new owner)
     // Left panel: a list of my tokens
-    const startMs = this.getNft().resaleCreationTime.getTime();
+    const startMs = this.getNft().resaleStartTime.getTime();
     const endMs = this.getNft().resaleEndTime.getTime();
     const nowMs = new Date().getTime();
     const progress = (nowMs - startMs) / (endMs - startMs);
-    return progress * 100;
+    return Math.round(progress * 100);
   }
 
   getHoursLeft(): string {

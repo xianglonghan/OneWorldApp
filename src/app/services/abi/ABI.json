@@ -86,6 +86,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "resaleStartTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "resaleEndTime",
 						"type": "uint256"
 					}
@@ -209,6 +214,11 @@
 					},
 					{
 						"internalType": "uint256",
+						"name": "resaleStartTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
 						"name": "resaleEndTime",
 						"type": "uint256"
 					}
@@ -262,6 +272,11 @@
 					{
 						"internalType": "uint256",
 						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "resaleStartTime",
 						"type": "uint256"
 					},
 					{
@@ -397,6 +412,21 @@
 			{
 				"components": [
 					{
+						"internalType": "bool",
+						"name": "isValid",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "tokenId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "address",
+						"name": "ownerAddress",
+						"type": "address"
+					},
+					{
 						"components": [
 							{
 								"internalType": "uint256",
@@ -448,6 +478,11 @@
 							{
 								"internalType": "uint256",
 								"name": "tokenId",
+								"type": "uint256"
+							},
+							{
+								"internalType": "uint256",
+								"name": "resaleStartTime",
 								"type": "uint256"
 							},
 							{
@@ -630,6 +665,11 @@
 			{
 				"internalType": "uint256",
 				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "resaleStartTime",
 				"type": "uint256"
 			},
 			{

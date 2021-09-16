@@ -2,13 +2,14 @@
   <mat-drawer
     #drawer2
     mode="side"
-    [opened]="leftSidenavOpened"
+    [opened]="true"
     [ngClass]="{
       'example-container-left': !isMobile,
       'example-container-mobile-left': isMobile
     }"
   >
     <app-wallet></app-wallet>
+    <app-my-nfts></app-my-nfts>
   </mat-drawer>
 
   <app-map-gl></app-map-gl>

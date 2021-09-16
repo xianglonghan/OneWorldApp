@@ -37,7 +37,7 @@ export class MapGlComponent implements OnChanges, OnDestroy {
   async onMapLoaded($event): void {
     this.map = $event;
     const bounds = this.map.getBounds();
-    // await this.loadNftsForBounds(bounds);
+    await this.loadNftsForBounds(bounds);
 
     const h3Source = 'h3';
     const h3BaseLayerId = 'h3-base';
@@ -127,11 +127,13 @@ export class MapGlComponent implements OnChanges, OnDestroy {
       const bounds = this.map.getBounds();
       const newH3Data = this.getH3GeojsonForBounds(bounds);
       this.map.getSource(h3Source).setData(newH3Data);
+      this.loadNftsForBounds(bounds);
     });
     this.map.on('zoomend', () => {
       const bounds = this.map.getBounds();
       const newH3Data = this.getH3GeojsonForBounds(bounds);
       this.map.getSource(h3Source).setData(newH3Data);
+      this.loadNftsForBounds(bounds);
     });
     this.map.on('click', (e) => {
       // Set `bbox` as 5px reactangle area around clicked point.
@@ -159,7 +161,7 @@ export class MapGlComponent implements OnChanges, OnDestroy {
 
   async loadNftsForBounds(bounds: LngLatBounds): any {
     const h3Keys = this.getH3KeysForBounds(bounds);
-    await this.contractService.getTokenAndResaleInfos(h3Keys);
+    await this.contractService.loadNfts(h3Keys);
   }
 
   getH3GeojsonForBounds(bounds: LngLatBounds): any {

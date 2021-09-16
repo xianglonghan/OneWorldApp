@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmptyNftSvgComponent } from './empty-nft-svg.component';
+import { MyNftsComponent } from './my-nfts.component';
 
-describe('EmptyNftSvgComponent', () => {
-  let component: EmptyNftSvgComponent;
-  let fixture: ComponentFixture<EmptyNftSvgComponent>;
+describe('MyNftsComponent', () => {
+  let component: MyNftsComponent;
+  let fixture: ComponentFixture<MyNftsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmptyNftSvgComponent ]
+      declarations: [ MyNftsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmptyNftSvgComponent);
+    fixture = TestBed.createComponent(MyNftsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
