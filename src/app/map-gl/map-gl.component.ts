@@ -11,7 +11,7 @@ import { LngLatBounds, Map as MglMap} from 'mapbox-gl';
 import { h3ToGeoBoundary, polyfill } from 'h3-js';
 import { MarkerComponent } from 'ngx-mapbox-gl/lib/marker/marker.component';
 import { fromEvent, Subscription, timer } from 'rxjs';
-import { GeoNFT, SoldStatus, ContractService } from '../services/contract.service';
+import { GeoNFT, TokenStatus, ContractService } from '../services/contract.service';
 import { MapHelperService } from './../services/map-helper.service';
 
 @Component({
@@ -36,6 +36,8 @@ export class MapGlComponent implements OnChanges, OnDestroy {
 
   async onMapLoaded($event): void {
     this.map = $event;
+    this.map.setStyle('mapbox://styles/mapbox/dark-v10');
+
     const bounds = this.map.getBounds();
     await this.loadNftsForBounds(bounds);
 
@@ -113,9 +115,9 @@ export class MapGlComponent implements OnChanges, OnDestroy {
           this.h3KeyToNft.set(nft.h3Key, nft);
         }
         const offMarketH3Keys = this.nfts.filter(
-            nft => nft.status == SoldStatus.SOLD).map(nft => nft.h3Key);
+            nft => nft.status == TokenStatus.HOLD).map(nft => nft.h3Key);
         const onMarketH3Keys = this.nfts.filter(
-            nft => nft.status == SoldStatus.RESALE).map(nft => nft.h3Key);
+            nft => nft.status == TokenStatus.RESALE).map(nft => nft.h3Key);
         const ownedH3Keys = this.nfts.filter(nft => nft.owner).map(nft => nft.h3Key);
         this.map.setFilter(h3OnMarketLayerId, ['in', 'h3Key', ...onMarketH3Keys]);
         this.map.setFilter(h3OffMarketLayerId, ['in', 'h3Key', ...offMarketH3Keys]);

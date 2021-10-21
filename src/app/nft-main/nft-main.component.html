@@ -8,16 +8,18 @@
   <div *ngIf="this.hasNft()">
     <mat-card>
       <mat-card-title>Token Details</mat-card-title>
-      <mat-card-content class="primary">{{this.getNft().status == SoldStatus.RESALE ? 'On Sale' : ''}}</mat-card-content>
+      <mat-card-content class="primary">{{this.getNft().status == TokenStatus.RESALE ? 'On Sale' : ''}}</mat-card-content>
       <mat-card-content class="accent">{{this.getNft().owner ? 'Owned' : ''}}</mat-card-content>
       <mat-card-content>Owner: {{this.getNft().ownerAddress | shortAddress}}</mat-card-content>
-      <mat-card-content>Latest Resale Price: {{this.getNft().price | weiToOne}} ONE</mat-card-content>
+      <mat-card-content>
+        <app-nft-price-tag price="{{this.getNft().price | weiToOne}}" label="Latest Resale Price"></app-nft-price-tag>
+      </mat-card-content>
     </mat-card>
 
     <mat-divider></mat-divider>
 
     <div [ngSwitch]="this.getNft().status">
-      <div *ngSwitchCase="SoldStatus.SOLD">
+      <div *ngSwitchCase="TokenStatus.HOLD">
         <mat-card *ngIf="this.isTokenOwner()">
           <mat-card-title>Start Resale</mat-card-title>
           <form
@@ -44,7 +46,7 @@
         </mat-card>
       </div>
 
-      <div *ngSwitchCase="SoldStatus.RESALE">
+      <div *ngSwitchCase="TokenStatus.RESALE">
         <mat-card>
           <mat-card-title>Resale Details</mat-card-title>
           <mat-card-content>
@@ -59,13 +61,14 @@
           </mat-card-content>
 
           <mat-card-content>
-            <div>Bid ask price: {{this.getNft().bidAskPrice | weiToOne}} ONE</div>
-            <div *ngIf="this.getNft().bidderAddress" class="accent">
+            <app-nft-price-tag label="Buy Now Price" price="{{this.getNft().bidAskPrice | weiToOne}}"></app-nft-price-tag>
+            <app-nft-price-tag label="Bid Ask Price" price="{{this.getNft().buyNowPrice | weiToOne}}"></app-nft-price-tag>
+            <div *ngIf="this.shouldShouldBidInfo()" class="accent">
               Highest Bid {{this.getNft().highestBidPrice | weiToOne}} ONE by {{this.getNft().bidderAddress | shortAddress}}
             </div>
           </mat-card-content>
           <mat-card-actions *ngIf="this.isSeller()">
-            <button (click)="this.stopResale()" mat-raised-button color="primary">
+            <button (click)="this.stopResale()" mat-raised-button class="submit-button" color="primary">
               <mat-icon>cancel</mat-icon>
               Stop Resale
             </button>
@@ -101,8 +104,19 @@
    </div>
   </div>
   <div *ngIf="!this.hasNft()">
-    <button mat-raised-button color="primary" (click)="mintNft()">
-      Mint and Buy
-    </button>
+    <form
+      (ngSubmit)="mintNft()"
+      [formGroup]="mintNftForm"
+      class="form">
+      <mat-form-field label="Nickname" appearance="fill">
+        <mat-label>Nickname</mat-label>
+        <input matInput formControlName="nickname"/>
+      </mat-form-field>
+      <div class="token-resale-status resale">• Initial Sale</div>
+      <app-nft-price-tag price="1" label="Buy this land"></app-nft-price-tag>
+      <button mat-raised-button color="primary" class="submit-button">
+        Buy
+      </button>
+    </form>
   </div>
 </div>

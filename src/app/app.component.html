@@ -7,9 +7,31 @@
       'example-container-left': !isMobile,
       'example-container-mobile-left': isMobile
     }"
+    class="left-drawer-main"
   >
-    <app-wallet></app-wallet>
-    <app-my-nfts></app-my-nfts>
+    <div class="app-logo">
+      <img src="../../assets/one-world-title.png"/>
+    </div>
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="short-tab-label">account_balance_wallet</mat-icon>
+        </ng-template>
+        <app-wallet></app-wallet>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="short-tab-label">trending_up</mat-icon>
+        </ng-template>
+        <app-my-nfts></app-my-nfts>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="short-tab-label">search</mat-icon>
+        </ng-template>
+        <app-nft-search></app-nft-search>
+      </mat-tab>
+    </mat-tab-group>
   </mat-drawer>
 
   <app-map-gl></app-map-gl>
@@ -25,6 +47,7 @@
       'example-container': !isMobile,
       'example-container-mobile': isMobile
     }"
+    class="right-drawer-main"
     [opened]="!!this.h3Key"
   >
     <!-- Move to separate component -->

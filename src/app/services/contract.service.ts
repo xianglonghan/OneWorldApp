@@ -5,9 +5,9 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import abi from './abi/ABI.json';
 const Web3 = require('web3');
 
-export enum SoldStatus {
+export enum TokenStatus {
   INVALID,
-  SOLD,
+  HOLD,
   RESALE,
 }
 
@@ -28,7 +28,7 @@ export interface MintTokenEvent {
 
 export interface GeoNFT {
   price: string;
-  status: SoldStatus;
+  status: TokenStatus;
   tokenId: string,
   h3Key: string
   layer: number;
@@ -114,8 +114,8 @@ export interface RetrieveTokenFromResaleEvent {
 export type TransactionEventUnion = TransactionResultEvent | TransactionStartedEvent;
 @Injectable()
 export class ContractService {
-  contractAddress = '0xc748fb43E2FbBb69B31642BFb585a03b017B912e';
-  blockNumber = 14600379;
+  contractAddress = '0x29954b1dA317A5298C32C20B6BE4BBDa9719a392';
+  blockNumber = 15810550;
   private loggedSubject = new BehaviorSubject<boolean>(false);
   logged$ = this.loggedSubject.asObservable();
 
@@ -269,16 +269,16 @@ export class ContractService {
     return this.selectedAddress.toLocaleLowerCase() === address.toLowerCase();
   }
 
-  getStatus(status: string) : SoldStatus {
+  getStatus(status: string) : TokenStatus {
     switch (status) {
       case '0':
-        return SoldStatus.INVALID;
+        return TokenStatus.INVALID;
       case '1':
-        return SoldStatus.SOLD;
+        return TokenStatus.HOLD;
       case '2':
-        return SoldStatus.RESALE;
+        return TokenStatus.RESALE;
     }
-    return SoldStatus.INVALID;
+    return TokenStatus.INVALID;
   }
 
   async ownerOf(tokenId: string): Promise<string> {
@@ -298,19 +298,19 @@ export class ContractService {
 
   canBid(nft: GeoNFT): boolean {
     return nft.resaleEndTime.getTime() > Date.now() &&
-        nft.status == SoldStatus.RESALE;
+        nft.status == TokenStatus.RESALE;
   }
 
   isReadyToRetrieve(nft: GeoNFT): boolean {
     return nft.bidderAddress &&
         nft.bidderAddress.toLowerCase() === this.selectedAddress.toLowerCase() &&
         nft.resaleEndTime.getTime() < Date.now() &&
-        nft.status == SoldStatus.RESALE;
+        nft.status == TokenStatus.RESALE;
   }
 
-  mintToken(h3Key: String): void {
+  mintToken(h3Key: String, nickname: string): void {
     const transaction = this.contract.methods
-      .mintToken(this.h3KeyToTokenId(h3Key), 1)
+      .mintToken(this.h3KeyToTokenId(h3Key), nickname, 1)
       .send({ 
         from: this.selectedAddress, 
         value: new Web3.utils.BN(this.oneToWei('1'))});

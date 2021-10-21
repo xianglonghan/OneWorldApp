@@ -1,4 +1,4 @@
-import { ContractService, GeoNFT, SoldStatus } from './../services/contract.service';
+import { ContractService, GeoNFT, TokenStatus } from './../services/contract.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { MapHelperService } from '../services/map-helper.service';
 import { FormBuilder, Validators } from '@angular/forms';
@@ -13,7 +13,7 @@ export class NftMainComponent implements OnInit {
   nfts: GeoNFT[] = [];
   h3Key: String = '';
   h3KeyToNft: Map<String, GeoNFT> = new Map();
-  SoldStatus = SoldStatus;
+  TokenStatus = TokenStatus;
   startResaleForm = this.formBuilder.group({
     buyNowPriceOne: ['', [Validators.required]],
     bidAskPriceOne: ['', [Validators.required]],
@@ -21,6 +21,9 @@ export class NftMainComponent implements OnInit {
   });
   bidResaleForm = this.formBuilder.group({
     priceOne: ['', [Validators.required]],
+  });
+  mintNftForm = this.formBuilder.group({
+    nickname: ['', [Validators.required]],
   });
   constructor(
     private formBuilder: FormBuilder,
@@ -55,7 +58,7 @@ export class NftMainComponent implements OnInit {
   }
 
   mintNft(): void {
-    this.contractService.mintToken(this.h3Key);
+    this.contractService.mintToken(this.h3Key, this.mintNftForm.value.nickname);
   }
 
   isTokenOwner(): boolean {
@@ -113,5 +116,9 @@ export class NftMainComponent implements OnInit {
     const nowMs = new Date().getTime();
     const hours = (endMs - nowMs) / 1000 / 3600;
     return hours.toFixed(2);
+  }
+
+  shouldShouldBidInfo(): boolean {
+    return BigInt(this.getNft().bidderAddress).toString() != '0';
   }
 }

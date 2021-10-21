@@ -65,15 +65,42 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
 			},
 			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum OneWorld.Status",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "layer",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint32",
+						"name": "resaleId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
+					}
+				],
 				"indexed": false,
-				"internalType": "address",
-				"name": "bidder",
-				"type": "address"
+				"internalType": "struct OneWorld.TokenInfo",
+				"name": "tokenInfo",
+				"type": "tuple"
 			},
 			{
 				"components": [
@@ -139,55 +166,40 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "buyer",
+				"name": "owner",
 				"type": "address"
 			},
 			{
 				"components": [
 					{
 						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "price",
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "sellerAddress",
-						"type": "address"
+						"internalType": "enum OneWorld.Status",
+						"name": "status",
+						"type": "uint8"
 					},
 					{
-						"internalType": "uint256",
-						"name": "bidAskPrice",
-						"type": "uint256"
+						"internalType": "uint8",
+						"name": "layer",
+						"type": "uint8"
 					},
 					{
-						"internalType": "uint256",
-						"name": "highestBidPrice",
-						"type": "uint256"
+						"internalType": "uint32",
+						"name": "resaleId",
+						"type": "uint32"
 					},
 					{
-						"internalType": "address",
-						"name": "bidderAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "buyNowPrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "resaleStartTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "resaleEndTime",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
 					}
 				],
 				"indexed": false,
-				"internalType": "struct OneWorld.ResaleInfo",
-				"name": "resaleInfo",
+				"internalType": "struct OneWorld.TokenInfo",
+				"name": "tokenInfo",
 				"type": "tuple"
 			}
 		],
@@ -230,6 +242,11 @@
 						"internalType": "uint32",
 						"name": "resaleId",
 						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
 					}
 				],
 				"indexed": false,
@@ -272,55 +289,40 @@
 			{
 				"indexed": false,
 				"internalType": "address",
-				"name": "buyer",
+				"name": "owner",
 				"type": "address"
 			},
 			{
 				"components": [
 					{
 						"internalType": "uint256",
-						"name": "tokenId",
+						"name": "price",
 						"type": "uint256"
 					},
 					{
-						"internalType": "address",
-						"name": "sellerAddress",
-						"type": "address"
+						"internalType": "enum OneWorld.Status",
+						"name": "status",
+						"type": "uint8"
 					},
 					{
-						"internalType": "uint256",
-						"name": "bidAskPrice",
-						"type": "uint256"
+						"internalType": "uint8",
+						"name": "layer",
+						"type": "uint8"
 					},
 					{
-						"internalType": "uint256",
-						"name": "highestBidPrice",
-						"type": "uint256"
+						"internalType": "uint32",
+						"name": "resaleId",
+						"type": "uint32"
 					},
 					{
-						"internalType": "address",
-						"name": "bidderAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "buyNowPrice",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "resaleStartTime",
-						"type": "uint256"
-					},
-					{
-						"internalType": "uint256",
-						"name": "resaleEndTime",
-						"type": "uint256"
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
 					}
 				],
 				"indexed": false,
-				"internalType": "struct OneWorld.ResaleInfo",
-				"name": "resaleInfo",
+				"internalType": "struct OneWorld.TokenInfo",
+				"name": "tokenInfo",
 				"type": "tuple"
 			}
 		],
@@ -338,15 +340,61 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "address",
-				"name": "seller",
-				"type": "address"
+				"internalType": "string",
+				"name": "nickname",
+				"type": "string"
+			}
+		],
+		"name": "SetTokenNicknameEvent",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
 			},
 			{
 				"indexed": false,
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			},
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum OneWorld.Status",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "layer",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint32",
+						"name": "resaleId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
+					}
+				],
+				"indexed": false,
+				"internalType": "struct OneWorld.TokenInfo",
+				"name": "tokenInfo",
+				"type": "tuple"
 			},
 			{
 				"components": [
@@ -395,12 +443,6 @@
 				"internalType": "struct OneWorld.ResaleInfo",
 				"name": "resaleInfo",
 				"type": "tuple"
-			},
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "creationTime",
-				"type": "uint256"
 			}
 		],
 		"name": "StartResaleEvent",
@@ -417,15 +459,42 @@
 			},
 			{
 				"indexed": false,
-				"internalType": "uint32",
-				"name": "resaleId",
-				"type": "uint32"
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
 			},
 			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "price",
+						"type": "uint256"
+					},
+					{
+						"internalType": "enum OneWorld.Status",
+						"name": "status",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint8",
+						"name": "layer",
+						"type": "uint8"
+					},
+					{
+						"internalType": "uint32",
+						"name": "resaleId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "string",
+						"name": "nickname",
+						"type": "string"
+					}
+				],
 				"indexed": false,
-				"internalType": "address",
-				"name": "seller",
-				"type": "address"
+				"internalType": "struct OneWorld.TokenInfo",
+				"name": "tokenInfo",
+				"type": "tuple"
 			}
 		],
 		"name": "StopResaleEvent",
@@ -586,6 +655,11 @@
 								"internalType": "uint32",
 								"name": "resaleId",
 								"type": "uint32"
+							},
+							{
+								"internalType": "string",
+								"name": "nickname",
+								"type": "string"
 							}
 						],
 						"internalType": "struct OneWorld.TokenInfo",
@@ -678,6 +752,11 @@
 				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "nickname",
+				"type": "string"
 			},
 			{
 				"internalType": "uint8",
@@ -920,6 +999,24 @@
 				"type": "uint256"
 			},
 			{
+				"internalType": "string",
+				"name": "nickname",
+				"type": "string"
+			}
+		],
+		"name": "setTokenNickname",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "tokenId",
+				"type": "uint256"
+			},
+			{
 				"internalType": "uint256",
 				"name": "buyNowPrice",
 				"type": "uint256"
@@ -1014,6 +1111,11 @@
 				"internalType": "uint32",
 				"name": "resaleId",
 				"type": "uint32"
+			},
+			{
+				"internalType": "string",
+				"name": "nickname",
+				"type": "string"
 			}
 		],
 		"stateMutability": "view",

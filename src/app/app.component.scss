@@ -32,6 +32,22 @@
   width: 100%;
 }
 
+.left-drawer-main {
+  width: 300px;
+  height: 100%;
+}
+
+.app-logo {
+  width: 80px;
+  height: 16px;
+  padding: 15px;
+}
+
+.mat-tab-label {
+  min-width: 40px !important;
+  color: #00F0FF;
+}
+
 .start {
   font-weight: 600;
   overflow: hidden;
@@ -72,6 +88,10 @@
 ::ng-deep .mat-drawer-content {
   overflow-y: hidden;
   
+}
+.right-drawer-main {
+  width: 300px;
+  padding: 10px;
 }
 .right-side-toolbar {
   width: 100%;

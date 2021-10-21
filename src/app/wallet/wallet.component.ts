@@ -52,6 +52,10 @@ export class WalletComponent implements OnInit {
     }
   }
 
+  getBalanceNumber(): string {
+    return Number(this.walletInfo.balance).toFixed(1);
+  }
+
   async logout(): Promise<void> {
     await this.router.navigate(['/']);
     this.contractService.logout();

@@ -48,6 +48,11 @@ import { TextareaComponent } from './ux-components/textarea/textarea.component';
 import { WalletComponent } from './wallet/wallet.component';
 import { NftMainComponent } from './nft-main/nft-main.component';
 import { MyNftsComponent } from './my-nfts/my-nfts.component';
+import { NftSearchComponent } from './nft-search/nft-search.component';
+import {APOLLO_OPTIONS} from 'apollo-angular';
+import {HttpLink} from 'apollo-angular/http';
+import {InMemoryCache} from '@apollo/client/core';
+import { NftPriceTagComponent } from './nft-price-tag/nft-price-tag.component';
 
 
 @NgModule({
@@ -70,6 +75,8 @@ import { MyNftsComponent } from './my-nfts/my-nfts.component';
     TextareaComponent,
     NftMainComponent,
     MyNftsComponent,
+    NftSearchComponent,
+    NftPriceTagComponent,
   ],
   imports: [
     BrowserModule,
@@ -111,6 +118,18 @@ import { MyNftsComponent } from './my-nfts/my-nfts.component';
     ContractService,
     DeviceDetectorService,
     PriceConverterService,
+    {
+      provide: APOLLO_OPTIONS,
+      useFactory: (httpLink: HttpLink) => {
+        return {
+          cache: new InMemoryCache(),
+          link: httpLink.create({
+            uri: 'http://localhost:8000/subgraphs/name/harmony/one-world',
+          }),
+        };
+      },
+      deps: [HttpLink],
+    },
   ],
   bootstrap: [AppComponent],
 })
